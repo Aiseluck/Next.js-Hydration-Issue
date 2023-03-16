@@ -1,38 +1,21 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Next.js Framework Not Detecting Hydration Error for Rendered Button with Disabled Property"
 
-## Getting Started
+## Introduction
 
-First, run the development server:
+When the button's disable property depends on a browser window object property, server-side rendering and client-side rendering may differ due to the window object's absence on the server side.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+This should trigger a hydration error, but Next.js does not alert users to this issue, which can lead to unexpected behavior.
+
+Please note that this problem will be encountered when attempting to render buttons with dependencies on browser window object properties
+
+For instance if
+
+```javascript
+buttonProperty = window. // any Property evaluating to either true or false
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+```html
+<button disabled="{buttonProperty}"></button>
+```
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+NextJs should alert the user to this as there would be a difference in the Client and Server Side Rendering
